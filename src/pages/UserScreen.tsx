@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
+import axios from "axios";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { CloseIcon } from "../assets/svg";
 import { extractTextFromPdf, extractTextFromWord } from "../utils/fileReader";
+import { generateDummyJSON } from "../utils/generateDummyJson";
 
 const UserScreen: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -35,12 +37,13 @@ const UserScreen: React.FC = () => {
   };
 
   const handleAnalyze = async () => {
-    setIsLoading(true);
-    let text = "";
     if (!file) {
       alert("Please upload a file");
       return;
     }
+
+    setIsLoading(true);
+    let text = "";
 
     try {
       if (file.type === "application/pdf") {
@@ -54,29 +57,34 @@ const UserScreen: React.FC = () => {
         alert("Unsupported file format. Please upload a PDF or Word document.");
         return;
       }
-      const options = {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_WINSTON_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text,
-        }),
-      };
-      const response = await fetch(
-        "https://api.gowinston.ai/v2/plagiarism",
-        options
-      );
-      const data = await response.json();
-      console.log(data);
+      // Below API is not from Winson AI, 
+      // const options = {
+      //   headers: {
+      //     Authorization: `Bearer ${import.meta.env.VITE_WINSTON_API_KEY}`,
+      //     "Content-Type": "application/json",
+      //   },
+      // };
 
-      setResults(data);
-    } catch (error) {
-      console.error(error);
-      alert("An error occurred while analyzing the file.");
+      // const response = await axios.post(
+      //   "https://api.gowinston.ai/v2/plagiarism",
+      //   { text },
+      //   options
+      // );
+      // console.log(response.data);
+
+      setResults(generateDummyJSON(text));
+    } catch (error: any) {
+      if (axios.isAxiosError(error)) {
+        console.error("Axios error:", error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+      alert(
+        "An error occurred while analyzing the file. Please try again later."
+      );
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

@@ -60,6 +60,10 @@ npm run build
 vercel deploy
 ```
 
+## Note
+
+Using the mock response for plagiarism detection. You can replace it with your own API response if needed.
+
 ## Contributing
 
 Contributions are welcome! Please follow the [Contributing Guidelines](https://github.com/prateek-chouhan05/Prateek-Chouhan-AIPlagiarismDetector/blob/main/CONTRIBUTING.md).
