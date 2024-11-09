@@ -6,9 +6,6 @@ const Header: React.FC = () => (
       <h1 className="text-xl font-bold text-white">AI Plagiarism Detector</h1>
     </a>
     <nav>
-      <a href="/features" className="mx-2">
-        Features
-      </a>
       <a href="/contact" className="mx-2">
         Contact
       </a>
