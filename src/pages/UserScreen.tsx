@@ -45,28 +45,25 @@ const UserScreen: React.FC = () => {
     try {
       if (file.type === "application/pdf") {
         text = await extractTextFromPdf(file);
-        console.log("PDF Text:", text);
       } else if (
         file.type ===
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
       ) {
         text = await extractTextFromWord(file);
       } else {
-        console.log("Unsupported file type");
+        alert("Unsupported file format. Please upload a PDF or Word document.");
+        return;
       }
       const options = {
         method: "POST",
         headers: {
-          Authorization:
-            `Bearer ${"import.meta.env.VITE_OPENAI_"}`,
+          Authorization: `Bearer ${import.meta.env.VITE_WINSTON_API_KEY}`,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           text,
         }),
       };
-      console.log("🚀 ~ handleAnalyze ~ options:", options)
-
       const response = await fetch(
         "https://api.gowinston.ai/v2/plagiarism",
         options

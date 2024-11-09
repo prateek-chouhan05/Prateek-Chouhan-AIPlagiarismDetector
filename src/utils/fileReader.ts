@@ -14,9 +14,8 @@ export const extractTextFromPdf = async (file: File): Promise<string> => {
   const pdfParser = new PDFParse();
 
   try {
-    // Load PDF from the ArrayBuffer
     const pdfData = await pdfParser.loadPDF(arrayBuffer);
-    console.log('Text:', pdfData?.text);
+
     return pdfData?.text || "";  // Return the extracted text
   } catch (error) {
     console.error('Error extracting text from PDF:', error);
